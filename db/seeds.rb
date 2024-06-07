@@ -4,6 +4,18 @@
 #
 # Example:
 #
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+Product.destroy_all
+
+Product.create!([
+                  {
+                    title: 'Product XYZ',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
+                    category: 'Design'
+                  },
+                  {
+                    title: 'English',
+                    description: 'C.'
+                  }
+                ])
+
+p "Created #{Product.count} Products"
