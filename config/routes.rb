@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   namespace :api do
-    resources :orders, only: %i[show create]
+    resources :products, only: %i[index show create]
+    resources :orders, only: %i[index show create]
   end
 end

@@ -3,7 +3,6 @@ class CreateOrders < ActiveRecord::Migration[7.1]
     create_table :orders do |t|
       t.decimal :amount
       t.decimal :tip
-      t.references :product, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
 
       t.timestamps

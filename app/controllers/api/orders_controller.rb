@@ -1,7 +1,12 @@
 class Api::OrdersController < ApplicationController
-  def show
-    @orders = Order.find(params[:id])
+  def index
+    @orders = Order.all
     render json: @orders
+  end
+
+  def show
+    @order = Order.find(params[:id])
+    render json: @order
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Order not found' }, status: :not_found
   end

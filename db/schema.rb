@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_07_152421) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_09_173113) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "artists", force: :cascade do |t|
+    t.string "name"
+    t.string "username"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "order_products", force: :cascade do |t|
     t.bigint "order_id", null: false
@@ -26,21 +33,31 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_07_152421) do
   create_table "orders", force: :cascade do |t|
     t.decimal "amount"
     t.decimal "tip"
-    t.bigint "product_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_orders_on_product_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "product_categories", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.integer "identifier"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "products", force: :cascade do |t|
     t.string "name"
+    t.string "image"
     t.string "description"
-    t.string "category"
     t.decimal "price"
+    t.bigint "product_category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "artist_id", null: false
+    t.index ["artist_id"], name: "index_products_on_artist_id"
+    t.index ["product_category_id"], name: "index_products_on_product_category_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -53,6 +70,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_07_152421) do
 
   add_foreign_key "order_products", "orders"
   add_foreign_key "order_products", "products"
-  add_foreign_key "orders", "products"
   add_foreign_key "orders", "users"
+  add_foreign_key "products", "artists"
+  add_foreign_key "products", "product_categories"
 end

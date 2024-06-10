@@ -9,7 +9,7 @@ gem 'rails', '~> 7.1.3', '>= 7.1.3.3'
 gem 'sprockets-rails'
 
 # Use pg as the database for Active Record
-gem "pg", "~> 1.1"
+gem 'pg', '~> 1.1'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '>= 5.0'
@@ -66,12 +66,14 @@ group :test do
   gem 'selenium-webdriver'
 end
 
-gem "pg", "~> 1.1"
-
 gem 'rubocop', '~> 1.64'
 
 gem 'rack-cors', '~> 2.0'
 
 gem 'tailwindcss-rails', '~> 2.6'
 
-gem "htmlbeautifier", "~> 1.4"
+gem 'htmlbeautifier', '~> 1.4'
+
+gem 'faker', '~> 3.4'
+
+gem "unsplash", "~> 3.1"
