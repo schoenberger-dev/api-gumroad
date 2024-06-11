@@ -21,6 +21,6 @@ class Api::ProductsController < ApplicationController
   end
 
   def create_product_params
-    params.require(:product).permit(:name, :image, :description, :price, :product_category)
+    params.require(:product).permit(:name, :image, :description, :price, :product_category_id, :artist_id)
   end
 end

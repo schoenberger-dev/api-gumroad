@@ -33,17 +33,23 @@ categories.each do |category|
   ProductCategory.create!(category)
 end
 
+def generate_jwt(email)
+  JWT.encode(email, Rails.application.secrets.secret_key_base, 'HS256')
+end
+
 # Create Users
 User.create!(
   name: 'niklas',
   username: 'schoen-dev',
-  email: 'niklas@schoenberger.dev'
+  email: 'niklas@schoenberger.dev',
+  token: generate_jwt('niklas@schoenberger.dev')
 )
 
 User.create!(
   name: 'Gumroad Team',
   username: 'gumroad',
-  email: '001@schoenberger.dev'
+  email: 'gumroad@schoenberger.dev',
+  token: generate_jwt('gumroad@schoenberger.dev')
 )
 
 # Create Artists
@@ -228,7 +234,7 @@ product_images = {
   Product.create!(
     name: Faker::Lorem.words(number: rand(1..4)).join(' ').titleize,
     description: Faker::Lorem.paragraph(sentence_count: 1),
-    price: Faker::Commerce.price(range: 1000..10_000),
+    price: Faker::Commerce.price(range: 10..100),
     artist: artists.sample,
     product_category:,
     image:
