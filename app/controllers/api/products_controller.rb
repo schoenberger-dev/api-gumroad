@@ -23,4 +23,13 @@ class Api::ProductsController < ApplicationController
   def create_product_params
     params.require(:product).permit(:name, :image, :description, :price, :product_category_id, :artist_id)
   end
+
+  def search
+    @results = if params[:q].present?
+                 Product.search(params[:q])
+               else
+                 []
+               end
+    render json: @results
+  end
 end

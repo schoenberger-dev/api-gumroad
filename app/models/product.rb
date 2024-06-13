@@ -1,4 +1,15 @@
 class Product < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search,
+                  against: %i[name description],
+                  associated_against: {
+                    product_category: %i[name slug],
+                    artist: %i[name username]
+                  },
+                  using: {
+                    tsearch: { prefix: true }
+                  }
+
   has_many :order_products
   has_many :orders, through: :order_products
   belongs_to :product_category

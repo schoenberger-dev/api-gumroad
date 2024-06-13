@@ -53,7 +53,7 @@ User.create!(
 )
 
 # Create Artists
-10.times do
+15.times do
   name = Faker::Artist.name
   Artist.create!(
     name:,
@@ -228,7 +228,7 @@ product_images = {
 }
 
 # Create Products
-6.times do
+10.times do
   product_category = categories.sample
   image = "/#{product_category.slug}/#{product_images[product_category.slug].sample}"
   Product.create!(
