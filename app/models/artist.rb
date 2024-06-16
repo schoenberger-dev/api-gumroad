@@ -7,4 +7,10 @@ class Artist < ApplicationRecord
                   }
 
   has_many :products
+  has_many :order_products, through: :products
+  has_many :tips
+
+  def total_tips
+    tips.sum(amount_cents)
+  end
 end

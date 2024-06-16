@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_10_233154) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_15_223820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_10_233154) do
   create_table "order_products", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.bigint "product_id", null: false
+    t.decimal "quantity", precision: 10, scale: 2, default: "1.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["order_id"], name: "index_order_products_on_order_id"
@@ -31,8 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_10_233154) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.decimal "amount"
-    t.decimal "tip"
+    t.decimal "amount_cents", precision: 10, scale: 2, null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -60,10 +60,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_10_233154) do
     t.index ["product_category_id"], name: "index_products_on_product_category_id"
   end
 
+  create_table "tips", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "artist_id", null: false
+    t.decimal "amount_cents", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["artist_id"], name: "index_tips_on_artist_id"
+    t.index ["order_id"], name: "index_tips_on_order_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "username"
     t.string "email"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "token"
@@ -74,4 +85,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_10_233154) do
   add_foreign_key "orders", "users"
   add_foreign_key "products", "artists"
   add_foreign_key "products", "product_categories"
+  add_foreign_key "tips", "artists"
+  add_foreign_key "tips", "orders"
 end

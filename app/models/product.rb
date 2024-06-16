@@ -10,10 +10,10 @@ class Product < ApplicationRecord
                     tsearch: { prefix: true }
                   }
 
-  has_many :order_products
-  has_many :orders, through: :order_products
   belongs_to :product_category
   belongs_to :artist
+  has_many :order_products
+  has_many :orders, through: :order_products
 
   def price
     price_cents.to_f / 100

@@ -6,6 +6,7 @@ Artist.destroy_all
 Product.destroy_all
 Order.destroy_all
 OrderProduct.destroy_all
+Tip.destroy_all
 
 # Define categories
 categories = [
@@ -42,6 +43,7 @@ User.create!(
   name: 'niklas',
   username: 'schoen-dev',
   email: 'niklas@schoenberger.dev',
+  password: 'pE@miwR3meRAjPpwJgDE@__',
   token: generate_jwt('niklas@schoenberger.dev')
 )
 
@@ -49,11 +51,12 @@ User.create!(
   name: 'Gumroad Team',
   username: 'gumroad',
   email: 'gumroad@schoenberger.dev',
+  password: 'CyftjbkV.XpZ6CNo-@d8h_m',
   token: generate_jwt('gumroad@schoenberger.dev')
 )
 
 # Create Artists
-15.times do
+12.times do
   name = Faker::Artist.name
   Artist.create!(
     name:,
@@ -245,17 +248,28 @@ end
 users = User.all
 products = Product.all
 
-4.times do
+5.times do
   order = Order.create!(
     user: users.sample,
-    amount: Faker::Commerce.price(range: 5000..20_000),
-    tip: Faker::Commerce.price(range: 500..5000)
+    amount_cents: Faker::Commerce.price(range: 5000..20_000)
   )
 
-  2.times do
-    OrderProduct.create!(
+  order_products = []
+
+  rand(1..4).times do
+    product = products.sample
+    order_product = OrderProduct.create!(
       order:,
-      product: products.sample
+      product:,
+      quantity: rand(1..3)
     )
+    order_products << order_product
+  end
+
+  artists_in_order = order_products.map { |op| op.product.artist }.uniq
+
+  artists_in_order.each do |artist|
+    total_tip = Faker::Commerce.price(range: 500..5000)
+    order.tips.create!(artist:, amount_cents: total_tip)
   end
 end

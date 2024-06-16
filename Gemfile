@@ -81,3 +81,5 @@ gem 'unsplash', '~> 3.1'
 gem 'jwt', '~> 2.8'
 
 gem 'pg_search', '~> 2.3'
+
+gem "bcrypt", "~> 3.1"

@@ -12,15 +12,24 @@ class Api::OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(create_order_params)
-    if @order.save
-      render json: @order, status: :created
-    else
-      render json: @order.errors, status: :unprocessable_entity
+    order = Order.create(order_params.merge(user: current_user))
+
+    order_params[:products].each do |product_id, details|
+      product = Product.find(product_id)
+      order.order_products.create(product:, quantity: details[:quantity])
     end
+
+    order_params[:tips].each do |artist_id, tip_amount|
+      artist = Artist.find(artist_id)
+      order.tips.create(artist:, amount: tip_amount)
+    end
+
+    render json: order, status: :created
   end
 
-  def create_order_params
-    params.require(:order).permit(:amount, :user_id, :tip, product_ids: [])
+  private
+
+  def order_params
+    params.require(:order).permit(products: [:quantity], tips: %i[artist_id tip_amount])
   end
 end
