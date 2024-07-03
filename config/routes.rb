@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
 
-  post 'login', to: 'api/sessions#create'
+  post 'login', to: 'sessions#create'
 
   namespace :api do
     get 'products/search', to: 'products#search'
